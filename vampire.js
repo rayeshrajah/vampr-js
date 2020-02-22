@@ -47,17 +47,43 @@ class Vampire {
 
   // Returns the vampire object with that name, or null if no vampire exists with that name
   vampireWithName(name) {
-    
+    let vampireName = null;
+    if (this.name === name) {
+      return this;
+    }
+    for (const offspring of this.offspring) {
+      if (vampireName) break;
+      vampireName = offspring.vampireWithName(name);
+    }
+    return vampireName;
   }
 
   // Returns the total number of vampires that exist
   get totalDescendents() {
-    
+    let totalVampire = 0;
+    for (const vampire of this.offspring) {
+      totalVampire++;
+      if (vampire.numberOfOffspring !== 0)
+        totalVampire += vampire.totalDescendents;
+    }
+    return totalVampire;
   }
 
   // Returns an array of all the vampires that were converted after 1980
   get allMillennialVampires() {
-    
+    let arrayOfMillennial = [];
+    console.log('Before the for loop --> ', arrayOfMillennial.length);
+    for (const vampires of this.offspring) {
+    console.log('Inside the for loop --> ', arrayOfMillennial.length);
+      if (vampires.numberOfOffspring >= 0) {
+        const vampireOver1980 = vampires.allMillennialVampires;
+        if (vampires.yearConverted > 1980) {
+          arrayOfMillennial.push(vampires);
+        }
+        arrayOfMillennial = arrayOfMillennial.concat(vampireOver1980);
+      } 
+    }console.log('after the for loop --> ', arrayOfMillennial.length);
+    return arrayOfMillennial;
   }
 
   /** Stretch **/
@@ -72,31 +98,6 @@ class Vampire {
       return this;
     }
   }
-
-  vampireWithName(name) {
-    let vampireName = null;
-    if(this.name === name){
-      return this;
-      for(const offspring of this.offspring){
-        if(vampireName)
-          break;
-        vampire = offspring.vampireWithName(name);
-      }
-      return vampire;
-    }
-  }
-
-  // Returns the total number of vampires that exist
-  get totalDescendents() {
-    let totalDecendants = 0;
-
-    
-  }
-
-  // Returns an array of all the vampires that were converted after 1980
-  get allMillennialVampires() {}
 }
 
 module.exports = Vampire;
-
-
